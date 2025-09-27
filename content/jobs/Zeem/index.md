@@ -3,7 +3,7 @@ date: '2025-03-1'
 title: 'Backend Developer'
 company: 'Zeem'
 location: 'Saudi Arabia, Riyadh'
-range: 'Mar 2025 - Present'
+range: 'SEP 2024 - Present'
 url: 'https://www.linkedin.com/company/zeem-sa/'
 ---
 
