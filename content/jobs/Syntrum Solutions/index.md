@@ -1,5 +1,5 @@
 ---
-date: '2022-12-21'
+date: '2024-12-21'
 title: 'Laravel Back-End Developer'
 company: 'Syntrum'
 location: 'Cairo, Egypt'

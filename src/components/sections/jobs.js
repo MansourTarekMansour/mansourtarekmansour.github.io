@@ -316,15 +316,7 @@ const Jobs = () => {
                         objectPosition="center"
                         objectFit="contain"
                       />)}
-
-                    {/* {company === 'Syntrum' && (
-                      <StaticImage
-                        src="../../images/certiticates/syntrum_cer.jpg"
-                        alt="Certificate of Internship"
-                        height={300}
-                        objectPosition="center"
-                        objectFit="contain"
-                      />)} */}
+                      
                   </StyledTabPanel>
                 </CSSTransition>
               );
