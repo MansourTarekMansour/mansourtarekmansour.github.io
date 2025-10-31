@@ -3,7 +3,7 @@ date: '2024-12-21'
 title: 'Laravel Back-End Developer'
 company: 'Syntrum'
 location: 'Cairo, Egypt'
-range: 'Oct 2022 - Sep 2024'
+range: 'Oct 2022 - Sep 2023'
 url: 'https://www.linkedin.com/company/syntrum-solutions/posts/?feedView=all'
 ---
 
