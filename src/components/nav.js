@@ -156,30 +156,30 @@ const StyledHeader = styled.header`
     align-items: center;
     list-style: none;
     padding: 0;
-    margin: 28px 0 0 0;
+    margin: 32px 0 0 0;
 
     li {
-      margin-right: 18px;
+      margin-right: 20px;
     }
 
     a {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 32px;
       color: var(--slate);
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 
       &:hover,
       &:focus {
-        color: var(--teal);
-        transform: translateY(-2px);
+        color: var(--lightest-slate);
+        transform: translateY(-3px);
       }
 
       svg {
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         fill: none;
         stroke: currentColor;
 

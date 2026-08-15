@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const StyledAboutSection = styled.section`
   margin-bottom: 96px;
   scroll-margin-top: 96px;
+  padding-top: 0;
 
   @media (max-width: 1023px) {
     margin-bottom: 64px;

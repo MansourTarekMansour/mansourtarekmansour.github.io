@@ -4,6 +4,10 @@ import styled from 'styled-components';
 const StyledContactSection = styled.section`
   margin-bottom: 96px;
   scroll-margin-top: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 
   @media (max-width: 1023px) {
     margin-bottom: 64px;
@@ -48,14 +52,15 @@ const StyledContactSection = styled.section`
     line-height: 1.6;
     color: var(--slate);
     max-width: 480px;
-    margin-bottom: 32px;
+    margin: 0 auto 32px auto;
   }
 
   .email-button {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    padding: 12px 24px;
+    padding: 14px 28px;
     border: 1px solid var(--teal);
     border-radius: 4px;
     background-color: rgba(45, 212, 191, 0.08);
@@ -64,6 +69,7 @@ const StyledContactSection = styled.section`
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s ease;
+    margin: 0 auto;
 
     &:hover,
     &:focus {
@@ -87,9 +93,8 @@ const Contact = () => (
     </p>
 
     <a className="email-button" href="mailto:mansourtarek100@gmail.com">
-      Say Hello
+      Say Hello 👋
     </a>
-
   </StyledContactSection>
 );
 

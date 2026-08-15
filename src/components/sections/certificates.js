@@ -235,7 +235,7 @@ const Certificates = () => {
     query {
       certImages: allFile(
         filter: {
-          relativePath: { regex: "/certiticates/" }
+          sourceInstanceName: { eq: "images" }
           extension: { in: ["png", "jpg", "jpeg"] }
         }
       ) {
@@ -467,9 +467,13 @@ const Certificates = () => {
     activeCategory === 'All' && !showAllInAllCategory ? filteredCerts.slice(0, 5) : filteredCerts;
 
   const getCertImageNode = (searchPath) => {
-    const found = data.certImages.edges.find(
-      ({ node }) => node.relativePath.includes(searchPath) || node.name.includes(searchPath),
-    );
+    if (!searchPath) return null;
+    const searchLower = searchPath.toLowerCase();
+    const found = data.certImages.edges.find(({ node }) => {
+      const relLower = node.relativePath.toLowerCase();
+      const nameLower = node.name.toLowerCase();
+      return relLower.includes(searchLower) || nameLower.includes(searchLower);
+    });
     return found ? getImage(found.node) : null;
   };
 

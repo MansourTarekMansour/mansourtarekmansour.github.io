@@ -26,6 +26,7 @@ const LayoutWrapper = styled.div`
     padding: 0 48px;
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 32px;
   }
 `;
