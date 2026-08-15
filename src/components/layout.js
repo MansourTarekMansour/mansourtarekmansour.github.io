@@ -1,50 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
-import { Head, Loader, Nav, Social, Email, Footer } from '@components';
+import { Head, Nav, Footer } from '@components';
 import { GlobalStyle, theme } from '@styles';
 
-const StyledContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+const Spotlight = styled.div`
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
 `;
 
-const Layout = ({ children, location }) => {
-  const isHome = location.pathname.endsWith('/');
-  const [isLoading, setIsLoading] = useState(isHome);
+const LayoutWrapper = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100vh;
+  max-width: 1280px;
+  padding: 48px 24px;
 
-  // Sets target="_blank" rel="noopener noreferrer" on external links
-  const handleExternalLinks = () => {
-    const allLinks = Array.from(document.querySelectorAll('a'));
-    if (allLinks.length > 0) {
-      allLinks.forEach(link => {
-        if (link.host !== window.location.host) {
-          link.setAttribute('rel', 'noopener noreferrer');
-          link.setAttribute('target', '_blank');
-        }
-      });
-    }
-  };
+  @media (min-width: 768px) {
+    padding: 64px 48px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 0 48px;
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+  }
+`;
+
+const MainContent = styled.main`
+  padding-top: 48px;
+
+  @media (min-width: 1024px) {
+    width: 52%;
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+`;
+
+
+const Layout = ({ children }) => {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    if (isLoading) {
-      return;
-    }
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
 
-    if (location.hash) {
-      const id = location.hash.substring(1); // location.hash without the '#'
-      setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.scrollIntoView();
-          el.focus();
-        }
-      }, 0);
-    }
-
-    handleExternalLinks();
-  }, [isLoading]);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
     <>
@@ -54,24 +61,23 @@ const Layout = ({ children, location }) => {
         <ThemeProvider theme={theme}>
           <GlobalStyle />
 
+          <Spotlight
+            style={{
+              background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(29, 78, 216, 0.15), transparent 80%)`,
+            }}
+          />
+
           <a className="skip-to-content" href="#content">
             Skip to Content
           </a>
 
-          {isLoading && isHome ? (
-            <Loader finishLoading={() => setIsLoading(false)} />
-          ) : (
-            <StyledContent>
-              <Nav isHome={isHome} />
-              <Social isHome={isHome} />
-              <Email isHome={isHome} />
-
-              <div id="content">
-                {children}
-                <Footer />
-              </div>
-            </StyledContent>
-          )}
+          <LayoutWrapper>
+            <Nav />
+            <MainContent id="content">
+              {children}
+              <Footer />
+            </MainContent>
+          </LayoutWrapper>
         </ThemeProvider>
       </div>
     </>
@@ -80,7 +86,8 @@ const Layout = ({ children, location }) => {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
-  location: PropTypes.object.isRequired,
+  location: PropTypes.object,
 };
 
 export default Layout;
+

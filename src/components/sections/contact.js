@@ -1,74 +1,96 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { srConfig, email } from '@config';
-import sr from '@utils/sr';
-import { usePrefersReducedMotion } from '@hooks';
 
 const StyledContactSection = styled.section`
-  max-width: 600px;
-  margin: 0 auto 100px;
-  text-align: center;
+  margin-bottom: 96px;
+  scroll-margin-top: 96px;
 
-  @media (max-width: 768px) {
-    margin: 0 auto 50px;
+  @media (max-width: 1023px) {
+    margin-bottom: 64px;
+    scroll-margin-top: 64px;
   }
 
-  .overline {
-    display: block;
-    margin-bottom: 20px;
-    color: var(--green);
-    font-family: var(--font-mono);
-    font-size: var(--fz-md);
-    font-weight: 400;
+  .sticky-mobile-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin-left: -24px;
+    margin-right: -24px;
+    margin-bottom: 16px;
+    width: calc(100% + 48px);
+    background-color: rgba(15, 23, 42, 0.75);
+    padding: 20px 24px;
+    backdrop-filter: blur(12px);
 
-    &:before {
-      bottom: 0;
-      font-size: var(--fz-sm);
-    }
-
-    &:after {
+    @media (min-width: 1024px) {
       display: none;
     }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--lightest-slate);
+      margin: 0;
+    }
   }
 
-  .title {
-    font-size: clamp(40px, 5vw, 60px);
+  .contact-title {
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 700;
+    color: var(--lightest-slate);
+    margin-bottom: 16px;
   }
 
-  .email-link {
-    ${({ theme }) => theme.mixins.bigButton};
-    margin-top: 50px;
+  .contact-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--slate);
+    max-width: 480px;
+    margin-bottom: 32px;
+  }
+
+  .email-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: 1px solid var(--teal);
+    border-radius: 4px;
+    background-color: rgba(45, 212, 191, 0.08);
+    color: var(--teal);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover,
+    &:focus {
+      background-color: rgba(45, 212, 191, 0.18);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(45, 212, 191, 0.15);
+    }
   }
 `;
 
-const Contact = () => {
-  const revealContainer = useRef(null);
-  const prefersReducedMotion = usePrefersReducedMotion();
+const Contact = () => (
+  <StyledContactSection id="contact" aria-label="Contact information">
+    <div className="sticky-mobile-header">
+      <h2>Contact</h2>
+    </div>
 
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      return;
-    }
+    <h3 className="contact-title">Get In Touch</h3>
+    <p className="contact-text">
+      Whether you have a question, a project proposal, or just want to say hi, my inbox is always open!
+      Feel free to reach out and I’ll do my best to get back to you.
+    </p>
 
-    sr.reveal(revealContainer.current, srConfig());
-  }, []);
+    <a className="email-button" href="mailto:mansourtarek100@gmail.com">
+      Say Hello
+    </a>
 
-  return (
-    <StyledContactSection id="contact" ref={revealContainer}>
-      <h2 className="numbered-heading overline">What’s Next?</h2>
-
-      <h2 className="title">Get In Touch</h2>
-
-      <p>
-        Although I’m not currently looking for any new opportunities, my inbox is always open.
-        Whether you have a question or just want to say hi, I’ll try my best to get back to you!
-      </p>
-
-      <a className="email-link" href={`mailto:${email}`}>
-        Say Hello
-      </a>
-    </StyledContactSection>
-  );
-};
+  </StyledContactSection>
+);
 
 export default Contact;

@@ -28,7 +28,7 @@ module.exports = {
         icon: 'src/images/logo.png',
       },
     },
-    `gatsby-plugin-offline`,
+
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -154,5 +154,6 @@ module.exports = {
         trackingId: 'UA-45666519-2',
       },
     },
-  ],
+    process.env.NODE_ENV === 'production' && `gatsby-plugin-offline`,
+  ].filter(Boolean),
 };

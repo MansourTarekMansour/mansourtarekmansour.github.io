@@ -6,14 +6,6 @@ module.exports = {
       name: 'GitHub',
       url: 'https://github.com/MansourTarekMansour',
     },
-    // {
-    //   name: 'Instagram',
-    //   url: 'https://www.instagram.com/bchiang7',
-    // },
-    // {
-    //   name: 'Twitter',
-    //   url: 'https://twitter.com/bchiang7',
-    // },
     {
       name: 'Linkedin',
       url: 'https://www.linkedin.com/in/mansour-tarek/',
@@ -22,7 +14,16 @@ module.exports = {
       name: 'Codeforces',
       url: 'https://codeforces.com/profile/mansour.tarek',
     },
+    {
+      name: 'Instagram',
+      url: 'https://www.instagram.com/mansour.tarek?igsh=ZndtdGJlZmN1OXh2',
+    },
+    {
+      name: 'Email',
+      url: 'mailto:mansourtarek100@gmail.com',
+    },
   ],
+
 
   navLinks: [
     {

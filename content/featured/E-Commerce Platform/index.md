@@ -1,22 +1,15 @@
 ---
-date: '1'
-title: 'Laravel E-Commerce Platform'
-cover: './e-commerce.png'
-# github: 'https://github.com/MansourTarekMansour/E_Commerce_BackEnd'
-external: 'https://github.com/MansourTarekMansour/E_Commerce_BackEnd'
+date: '2026-02-01'
+title: 'E-Commerce Platform'
+cover: './ecommerce_platform.png'
+github: 'https://github.com/MansourTarekMansour/E_Commerce_BackEnd/'
+external: 'https://github.com/MansourTarekMansour/E_Commerce_BackEnd/'
 tech:
-  - Laravel
   - PHP
+  - Laravel
   - MySQL
-  - Blade
-  - JWT
-  - API
-  - Postman
-  - Database Design
+  - RESTful API
+  - Authentication
 ---
 
-
-Laravel E-Commerce Dashbard.
-Developed a comprehensive e-commerce platform with seamless shopping experience and powerful admin dashboard.
-Implemented RESTful APIs for mobile application integration and third-party platform connectivity.
-Created efficient management systems for products, orders, and user administration.
+Full-stack E-Commerce web backend platform built with PHP and Laravel framework featuring user authentication, product management, order processing, and RESTful API endpoints.

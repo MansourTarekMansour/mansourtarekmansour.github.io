@@ -1,204 +1,258 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { StaticImage } from 'gatsby-plugin-image';
 import styled from 'styled-components';
-import { srConfig } from '@config';
-import sr from '@utils/sr';
-import { usePrefersReducedMotion } from '@hooks';
 
 const StyledAboutSection = styled.section`
-  max-width: 900px;
+  margin-bottom: 96px;
+  scroll-margin-top: 96px;
 
-  .inner {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    grid-gap: 50px;
+  @media (max-width: 1023px) {
+    margin-bottom: 64px;
+    scroll-margin-top: 64px;
+  }
 
-    @media (max-width: 768px) {
-      display: block;
+  .sticky-mobile-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin-left: -24px;
+    margin-right: -24px;
+    margin-bottom: 16px;
+    width: calc(100% + 48px);
+    background-color: rgba(15, 23, 42, 0.75);
+    padding: 20px 24px;
+    backdrop-filter: blur(12px);
+
+    @media (min-width: 1024px) {
+      display: none;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--lightest-slate);
+      margin: 0;
     }
   }
-`;
-const StyledText = styled.div`
-  ul.skills-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(140px, 200px));
-    grid-gap: 0 10px;
-    padding: 0;
-    margin: 20px 0 0 0;
-    overflow: hidden;
-    list-style: none;
 
-    li {
-      position: relative;
-      margin-bottom: 10px;
-      padding-left: 20px;
-      font-family: var(--font-mono);
-      font-size: var(--fz-xs);
-
-      &:before {
-        content: '▹';
-        position: absolute;
-        left: 0;
-        color: var(--green);
-        font-size: var(--fz-sm);
-        line-height: 12px;
-      }
-    }
-  }
-`;
-const StyledPic = styled.div`
-  position: relative;
-  max-width: 300px;
-
-  @media (max-width: 768px) {
-    margin: 50px auto 0;
-    width: 70%;
-  }
-
-  .wrapper {
-    ${({ theme }) => theme.mixins.boxShadow};
-    display: block;
+  .about-wrapper {
     position: relative;
-    width: 100%;
-    border-radius: var(--border-radius);
-    background-color: var(--green);
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+  }
 
-    &:hover,
-    &:focus {
-      outline: 0;
-      transform: translate(-4px, -4px);
+  .profile-pic-container {
+    position: relative;
+    margin: 0 auto 24px auto;
+    width: 200px;
 
-      &:after {
-        transform: translate(8px, 8px);
+    @media (min-width: 640px) {
+      float: right;
+      margin: 0 0 20px 28px;
+      width: 220px;
+    }
+
+    .wrapper {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid rgba(94, 234, 212, 0.4);
+      box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.8), 0 0 20px rgba(45, 212, 191, 0.15);
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+      &:hover {
+        border-color: var(--teal);
+        transform: translateY(-6px);
+        box-shadow: 0 25px 50px -12px rgba(45, 212, 191, 0.3), 0 0 25px rgba(45, 212, 191, 0.25);
       }
 
       .img {
-        filter: none;
-        mix-blend-mode: normal;
+        display: block;
+        width: 100%;
+        border-radius: 10px;
+
+        img {
+          border-radius: 10px;
+          object-fit: cover;
+        }
       }
     }
+  }
 
-    .img {
-      position: relative;
-      border-radius: var(--border-radius);
-      mix-blend-mode: multiply;
-      filter: grayscale(100%) contrast(1);
-      transition: var(--transition);
+  .bio-text {
+    p {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--slate);
+
+      a {
+        font-weight: 500;
+        color: var(--lightest-slate);
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+          color: var(--teal);
+        }
+      }
     }
+  }
 
-    &:before,
-    &:after {
-      content: '';
-      display: block;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: var(--border-radius);
-      transition: var(--transition);
+  .skills-pills {
+    clear: both;
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0 0;
+
+    li {
+      margin-right: 8px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      border-radius: 9999px;
+      background-color: var(--teal-tint);
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.25;
+      color: var(--teal);
     }
+  }
 
-    &:before {
-      top: 0;
-      left: 0;
-      background-color: var(--navy);
-      mix-blend-mode: screen;
-    }
+  .about-resume-wrapper {
+    margin-top: 24px;
 
-    &:after {
-      border: 2px solid var(--green);
-      top: 14px;
-      left: 14px;
-      z-index: -1;
+    .about-resume-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border: 1px solid var(--teal);
+      border-radius: 4px;
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+
+      &:hover,
+      &:focus {
+        background-color: var(--teal-tint);
+        transform: translateY(-2px);
+      }
+
+      .arrow-icon {
+        width: 14px;
+        height: 14px;
+        transition: transform 0.15s ease;
+      }
+
+      &:hover .arrow-icon {
+        transform: translate(2px, -2px);
+      }
     }
   }
 `;
 
 const About = () => {
-  const revealContainer = useRef(null);
-  const prefersReducedMotion = usePrefersReducedMotion();
-
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      return;
-    }
-
-    sr.reveal(revealContainer.current, srConfig());
-  }, []);
-
   const skills = [
     'PHP',
     'Laravel',
+    'MySQL',
+    'PostgreSQL',
+    'REST APIs',
+    'Redis Cache',
+    'CI/CD',
+    'Database Design',
+    'MVC / HMVC',
+    'Clean Architecture',
     'Flutter',
     'Dart',
     'Firebase',
-    'WordPress',
-    'Databases',
-    'HTML & CSS',
-    'Bootstrap',
     'C/C++',
-    'APIs',
-    'MySQL',
-    'Jira',
+    'Algorithms & Data Structures',
+    'HTML & CSS',
+    'Figma',
     'Postman',
+    'Jira',
+    'WordPress',
   ];
 
   return (
-    <StyledAboutSection id="about" ref={revealContainer}>
-      <h2 className="numbered-heading">About Me</h2>
+    <StyledAboutSection id="about" aria-label="About me">
+      <div className="sticky-mobile-header">
+        <h2>About</h2>
+      </div>
 
-      <div className="inner">
-        <StyledText>
-          <div>
-            <p>
-              Hello! I’m Mansour Tarek, a passionate Flutter and Laravel Developer specializing in
-              building cross-platform mobile applications and developing robust back-end systems.
-              With a strong foundation in data structures, algorithms, and a background in
-              competitive programming, I focus on creating efficient, scalable, and user-friendly
-              solutions. I’m committed to continuous learning, innovation, and delivering
-              high-quality applications that drive real impact.
-            </p>
-            {/* <p>
-              Fast-forward to today, and I’ve had the privilege of working at{' '}
-              <a href="https://us.mullenlowe.com/">an advertising agency</a>,{' '}
-              <a href="https://starry.com/">a start-up</a>,{' '}
-              <a href="https://www.apple.com/">a huge corporation</a>, and{' '}
-              <a href="https://scout.camd.northeastern.edu/">a student-led design studio</a>. My
-              main focus these days is building accessible, inclusive products and digital
-              experiences at <a href="https://upstatement.com/">Upstatement</a> for a variety of
-              clients.
-            </p> */}
-            {/* <p>
-              I also recently{' '}
-              <a href="https://www.newline.co/courses/build-a-spotify-connected-app">
-                launched a course
-              </a>{' '}
-              that covers everything you need to build a web app with the Spotify API using Node
-              &amp; React.
-            </p>
-
-            <p>Here are a few technologies I’ve been working with recently:</p> */}
-          </div>
-
-          <ul className="skills-list">
-            {skills && skills.map((skill, i) => <li key={i}>{skill}</li>)}
-          </ul>
-        </StyledText>
-
-        <StyledPic>
+      <div className="about-wrapper">
+        <div className="profile-pic-container">
           <div className="wrapper">
             <StaticImage
               className="img"
               src="../../images/me.jpeg"
-              width={500}
+              width={400}
               quality={95}
-              formats={['AUTO', 'WEBP', 'AVIF']}
-              alt="Headshot"
+              formats={['AUTO', 'WEBP']}
+              alt="Mansour Tarek Headshot"
             />
           </div>
-        </StyledPic>
+        </div>
+
+        <div className="bio-text">
+          <p>
+            Hello! I’m Mansour Tarek, a Software Engineer and Backend Developer specializing in building
+            scalable backend systems, robust RESTful APIs, and cross-platform applications.
+          </p>
+          <p>
+            With a strong foundation in data structures, algorithms, and an active background in competitive programming
+            on <a href="https://codeforces.com/profile/mansour.tarek" target="_blank" rel="noreferrer">Codeforces</a>,
+            I focus on engineering high-performance, efficient, and maintainable software solutions.
+          </p>
+          <p>
+            Over the past few years, I’ve had the privilege of engineering backend systems for ride-sharing platforms at{' '}
+            <a href="https://www.linkedin.com/company/zeem-sa/" target="_blank" rel="noreferrer">Zeem</a>, delivering web dashboards at{' '}
+            <a href="https://www.linkedin.com/company/syntrum-solutions/posts/?feedView=all" target="_blank" rel="noreferrer">Syntrum Solutions</a>, and instructing competitive programming and computer science courses for national initiatives.
+          </p>
+        </div>
+
+        <ul className="skills-pills" aria-label="Technologies and skills">
+          {skills.map((skill, i) => (
+            <li key={i}>{skill}</li>
+          ))}
+        </ul>
+
+        <div className="about-resume-wrapper">
+          <a href="/resume.pdf" target="_blank" rel="noreferrer" className="about-resume-btn">
+            <span>View Full Résumé</span>
+            <svg className="arrow-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fillRule="evenodd"
+                d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </a>
+        </div>
       </div>
     </StyledAboutSection>
   );
 };
 
 export default About;
+
+
+
+
+
+
+
+

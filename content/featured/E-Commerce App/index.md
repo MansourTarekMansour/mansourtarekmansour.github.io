@@ -1,18 +1,16 @@
 ---
-date: '2'
-title: 'Flutter E-Commerce Application'
+date: '2026-03-01'
+title: 'Flutter E-Commerce'
 cover: './ecommerce.png'
-# github: 'https://github.com/MansourTarekMansour/Ecommerce_application'
+github: 'https://github.com/MansourTarekMansour/Ecommerce_application'
 external: 'https://github.com/MansourTarekMansour/Ecommerce_application'
 tech:
   - Flutter
   - Dart
+  - REST API
+  - Cubit
   - Bloc
-  - API
-  - Postman
-  - Google Auth
+  - Clean Architecture
 ---
 
-Mobile Store Platform.
-Developed a comprehensive mobile store application with multiple payment methods.
-Implemented both online payment integration and cash on delivery options.
+Mobile E-Commerce Application built with Flutter using Cubit & Bloc state management and Clean Architecture. Implemented product browsing, cart management, checkout flows, and user profile management.

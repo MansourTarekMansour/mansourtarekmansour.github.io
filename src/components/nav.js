@@ -1,289 +1,282 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'gatsby';
-import PropTypes from 'prop-types';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import styled, { css } from 'styled-components';
-import { navLinks } from '@config';
-import { loaderDelay } from '@utils';
-import { useScrollDirection, usePrefersReducedMotion } from '@hooks';
-import { Menu } from '@components';
-import { IconLogo, IconHex } from '@components/icons';
+import styled from 'styled-components';
+import { socialMedia } from '@config';
+import { Icon } from '@components/icons';
 
 const StyledHeader = styled.header`
-  ${({ theme }) => theme.mixins.flexBetween};
-  position: fixed;
-  top: 0;
-  z-index: 11;
-  padding: 0px 50px;
-  width: 100%;
-  height: var(--nav-height);
-  background-color: rgba(10, 25, 47, 0.85);
-  filter: none !important;
-  pointer-events: auto !important;
-  user-select: auto !important;
-  backdrop-filter: blur(10px);
-  transition: var(--transition);
+  padding-top: 48px;
+  padding-bottom: 24px;
 
-  @media (max-width: 1080px) {
-    padding: 0 40px;
-  }
-  @media (max-width: 768px) {
-    padding: 0 25px;
+  @media (min-width: 1024px) {
+    position: sticky;
+    top: 0;
+    display: flex;
+    max-height: 100vh;
+    width: 48%;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 96px;
+    padding-bottom: 96px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    ${props =>
-    props.scrollDirection === 'up' &&
-      !props.scrolledToTop &&
-      css`
-        height: var(--nav-scroll-height);
-        transform: translateY(0px);
-        background-color: rgba(10, 25, 47, 0.85);
-        box-shadow: 0 10px 30px -10px var(--navy-shadow);
-      `};
-
-    ${props =>
-    props.scrollDirection === 'down' &&
-      !props.scrolledToTop &&
-      css`
-        height: var(--nav-scroll-height);
-        transform: translateY(calc(var(--nav-scroll-height) * -1));
-        box-shadow: 0 10px 30px -10px var(--navy-shadow);
-      `};
+  .header-top {
+    display: flex;
+    flex-direction: column;
   }
-`;
 
-const StyledNav = styled.nav`
-  ${({ theme }) => theme.mixins.flexBetween};
-  position: relative;
-  width: 100%;
-  color: var(--lightest-slate);
-  font-family: var(--font-mono);
-  counter-reset: item 0;
-  z-index: 12;
-
-  .logo {
-    ${({ theme }) => theme.mixins.flexCenter};
+  .name {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--lightest-slate);
+    margin: 0;
 
     a {
-      color: var(--green);
-      width: 42px;
-      height: 42px;
-      position: relative;
-      z-index: 1;
+      color: inherit;
+      text-decoration: none;
+      &:hover {
+        color: inherit;
+      }
+    }
+  }
 
-      .hex-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-        @media (prefers-reduced-motion: no-preference) {
-          transition: var(--transition);
+
+  .title {
+    margin-top: 8px;
+    font-size: clamp(18px, 3vw, 20px);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--lightest-slate);
+  }
+
+  .tech-subtitle {
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--teal);
+  }
+
+  .tagline {
+    margin-top: 14px;
+    max-width: 320px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--slate);
+  }
+
+  .resume-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 18px;
+    width: max-content;
+    padding: 8px 16px;
+    border: 1px solid var(--teal);
+    border-radius: 4px;
+    background-color: rgba(45, 212, 191, 0.08);
+    color: var(--teal);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover,
+    &:focus {
+      background-color: rgba(45, 212, 191, 0.18);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15);
+    }
+
+    .arrow-icon {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.15s ease;
+    }
+  }
+
+  .nav-menu {
+    display: none;
+    margin-top: 40px;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: max-content;
+    }
+
+    li {
+      margin-bottom: 0;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      text-decoration: none;
+
+      &.active,
+      &:hover {
+        .nav-indicator {
+          width: 64px;
+          background-color: var(--lightest-slate);
+        }
+        .nav-text {
+          color: var(--lightest-slate);
         }
       }
+    }
 
-      .logo-container {
-        position: relative;
-        z-index: 1;
-        svg {
-          fill: none;
-          user-select: none;
-          @media (prefers-reduced-motion: no-preference) {
-            transition: var(--transition);
-          }
-          polygon {
-            fill: var(--navy);
-          }
-        }
-      }
+    .nav-indicator {
+      display: block;
+      height: 1px;
+      width: 32px;
+      margin-right: 16px;
+      background-color: var(--dark-slate);
+      transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    .nav-text {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--dark-slate);
+      transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+  }
+
+  .social-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 28px 0 0 0;
+
+    li {
+      margin-right: 18px;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      color: var(--slate);
+      transition: all 0.2s ease;
 
       &:hover,
       &:focus {
-        outline: 0;
-        transform: translate(-4px, -4px);
-        .hex-container {
-          transform: translate(4px, 3px);
+        color: var(--teal);
+        transform: translateY(-2px);
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+
+        &.feather-codeforces,
+        path[fill] {
+          fill: currentColor;
         }
       }
     }
   }
 `;
 
-const StyledLinks = styled.div`
-  display: flex;
-  align-items: center;
+const navItems = [
+  { name: 'About', url: '#about' },
+  { name: 'Experience', url: '#experience' },
+  { name: 'Projects', url: '#projects' },
+  { name: 'Certificates', url: '#certificates' },
+  { name: 'Contact', url: '#contact' },
+];
 
-  @media (max-width: 768px) {
-    display: none;
-  }
-
-  ol {
-    ${({ theme }) => theme.mixins.flexBetween};
-    padding: 0;
-    margin: 0;
-    list-style: none;
-
-    li {
-      margin: 0 5px;
-      position: relative;
-      counter-increment: item 1;
-      font-size: var(--fz-xs);
-
-      a {
-        padding: 10px;
-
-        &:before {
-          content: '0' counter(item) '.';
-          margin-right: 5px;
-          color: var(--green);
-          font-size: var(--fz-xxs);
-          text-align: right;
-        }
-      }
-    }
-  }
-
-  .resume-button {
-    ${({ theme }) => theme.mixins.smallButton};
-    margin-left: 15px;
-    font-size: var(--fz-xs);
-  }
-`;
-
-const Nav = ({ isHome }) => {
-  const [isMounted, setIsMounted] = useState(!isHome);
-  const scrollDirection = useScrollDirection('down');
-  const [scrolledToTop, setScrolledToTop] = useState(true);
-  const prefersReducedMotion = usePrefersReducedMotion();
-
-  const handleScroll = () => {
-    setScrolledToTop(window.pageYOffset < 50);
-  };
+const Nav = () => {
+  const [activeSection, setActiveSection] = useState('about');
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      return;
-    }
+    const sections = ['about', 'experience', 'projects', 'certificates', 'contact'];
 
-    const timeout = setTimeout(() => {
-      setIsMounted(true);
-    }, 100);
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + 180;
 
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      clearTimeout(timeout);
-      window.removeEventListener('scroll', handleScroll);
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const id = sections[i];
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPos >= top) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      }
     };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const timeout = isHome ? loaderDelay : 0;
-  const fadeClass = isHome ? 'fade' : '';
-  const fadeDownClass = isHome ? 'fadedown' : '';
-
-  const Logo = (
-    <div className="logo" tabIndex="-1">
-      {isHome ? (
-        <a href="/" aria-label="home">
-          <div className="hex-container">
-            <IconHex />
-          </div>
-          <div className="logo-container">
-            <IconLogo />
-          </div>
-        </a>
-      ) : (
-        <Link to="/" aria-label="home">
-          <div className="hex-container">
-            <IconHex />
-          </div>
-          <div className="logo-container">
-            <IconLogo />
-          </div>
-        </Link>
-      )}
-    </div>
-  );
-
-  const ResumeLink = (
-    <a className="resume-button" href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-      Resume
-    </a>
-  );
-
   return (
-    <StyledHeader scrollDirection={scrollDirection} scrolledToTop={scrolledToTop}>
-      <StyledNav>
-        {prefersReducedMotion ? (
-          <>
-            {Logo}
+    <StyledHeader>
+      <div className="header-top">
+        <h1 className="name">
+          <a href="/">Mansour Tarek</a>
+        </h1>
 
-            <StyledLinks>
-              <ol>
-                {navLinks &&
-                  navLinks.map(({ url, name }, i) => (
-                    <li key={i}>
-                      <Link to={url}>{name}</Link>
-                    </li>
-                  ))}
-              </ol>
-              <div>{ResumeLink}</div>
-            </StyledLinks>
+        <h2 className="title">Backend & Full Stack Developer</h2>
+        <p className="tech-subtitle">PHP • Laravel • Flutter</p>
+        <p className="tagline">
+          I build scalable backend systems, robust RESTful APIs, and high-performance web and mobile applications.
+        </p>
 
-            <Menu />
-          </>
-        ) : (
-          <>
-            <TransitionGroup component={null}>
-              {isMounted && (
-                <CSSTransition classNames={fadeClass} timeout={timeout}>
-                  <>{Logo}</>
-                </CSSTransition>
-              )}
-            </TransitionGroup>
+        <nav className="nav-menu" aria-label="In-page jump links">
+          <ul>
+            {navItems.map(({ name, url }) => {
+              const id = url.substring(1);
+              const isActive = activeSection === id;
+              return (
+                <li key={id}>
+                  <a href={url} className={isActive ? 'active' : ''}>
+                    <span className="nav-indicator" />
+                    <span className="nav-text">{name}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </div>
 
-            <StyledLinks>
-              <ol>
-                <TransitionGroup component={null}>
-                  {isMounted &&
-                    navLinks &&
-                    navLinks.map(({ url, name }, i) => (
-                      <CSSTransition key={i} classNames={fadeDownClass} timeout={timeout}>
-                        <li key={i} style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                          <Link to={url}>{name}</Link>
-                        </li>
-                      </CSSTransition>
-                    ))}
-                </TransitionGroup>
-              </ol>
-
-              <TransitionGroup component={null}>
-                {isMounted && (
-                  <CSSTransition classNames={fadeDownClass} timeout={timeout}>
-                    <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
-                      {ResumeLink}
-                    </div>
-                  </CSSTransition>
-                )}
-              </TransitionGroup>
-            </StyledLinks>
-
-            <TransitionGroup component={null}>
-              {isMounted && (
-                <CSSTransition classNames={fadeClass} timeout={timeout}>
-                  <Menu />
-                </CSSTransition>
-              )}
-            </TransitionGroup>
-          </>
-        )}
-      </StyledNav>
+      <ul className="social-list" aria-label="Social media">
+        {socialMedia &&
+          socialMedia.map(({ url, name }, i) => (
+            <li key={i}>
+              <a href={url} aria-label={name} target="_blank" rel="noreferrer">
+                <Icon name={name} />
+              </a>
+            </li>
+          ))}
+      </ul>
     </StyledHeader>
   );
 };
 
-Nav.propTypes = {
-  isHome: PropTypes.bool,
-};
-
 export default Nav;
+
+
+
+
+
+

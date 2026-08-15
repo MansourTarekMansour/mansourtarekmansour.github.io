@@ -16,6 +16,7 @@ import {
   IconStar,
   IconTwitter,
   IconCodeforces,
+  IconEmail,
 } from '@components/icons';
 
 const Icon = ({ name }) => {
@@ -50,6 +51,9 @@ const Icon = ({ name }) => {
       return <IconTwitter />;
     case 'Codeforces':
       return <IconCodeforces />;
+    case 'Email':
+    case 'Mail':
+      return <IconEmail />;
     default:
       return <IconExternal />;
   }
@@ -60,3 +64,4 @@ Icon.propTypes = {
 };
 
 export default Icon;
+

@@ -2,7 +2,6 @@
 date: '96'
 title: 'Lost'
 github: 'https://github.com/MansourTarekMansour/lost_app'
-external: 'https://drive.google.com/file/d/1yF9aTotu-NlwKkVe7ZseqykwG2IevHsc/view?usp=drivesdk'
 tech:
   - Flutter
   - Dart
@@ -13,4 +12,5 @@ tech:
 company: ''
 showInProjects: true
 ---
-A program to find missing persons using artificial intelligence.
+
+A cross-platform Flutter application to find missing persons using artificial intelligence and face recognition.
