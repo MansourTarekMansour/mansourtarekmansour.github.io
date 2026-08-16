@@ -317,6 +317,8 @@ const Featured = () => {
                   gatsbyImageData(width: 700, placeholder: DOMINANT_COLOR, formats: [AUTO, WEBP, AVIF])
                 }
               }
+              playstore
+              appstore
               tech
               github
               external
@@ -353,8 +355,9 @@ const Featured = () => {
         {featuredProjects &&
           featuredProjects.map(({ node }, i) => {
             const { frontmatter, html } = node;
-            const { external, title, tech, github, cover, cta } = frontmatter;
+            const { external, title, tech, github, cover, cta, playstore, appstore } = frontmatter;
             const image = getImage(cover);
+            const primaryLink = external || playstore || appstore || github || '#';
 
             return (
               <StyledProject key={i} ref={el => (revealProjects.current[i] = el)}>
@@ -363,7 +366,7 @@ const Featured = () => {
                     <p className="project-overline">Featured Project</p>
 
                     <h3 className="project-title">
-                      <a href={external}>{title}</a>
+                      <a href={primaryLink}>{title}</a>
                     </h3>
 
                     <div
@@ -385,6 +388,16 @@ const Featured = () => {
                           Learn More
                         </a>
                       )}
+                      {playstore && (
+                        <a href={playstore} aria-label="Google Play Store Link" target="_blank" rel="noreferrer">
+                          <Icon name="PlayStore" />
+                        </a>
+                      )}
+                      {appstore && (
+                        <a href={appstore} aria-label="Apple App Store Link" target="_blank" rel="noreferrer">
+                          <Icon name="AppStore" />
+                        </a>
+                      )}
                       {github && (
                         <a href={github} aria-label="GitHub Link">
                           <Icon name="GitHub" />
@@ -400,7 +413,7 @@ const Featured = () => {
                 </div>
 
                 <div className="project-image">
-                  <a href={external ? external : github ? github : '#'}>
+                  <a href={primaryLink}>
                     <GatsbyImage image={image} alt={title} />
                   </a>
                 </div>
